@@ -74,6 +74,71 @@ biplot(pr.out, scale=0)
 
 plot( pr.out$x[,1], pr.out$x[,2], col=labels, pch=19 )
 
+## (c)
+km.out=kmeans(dat,3,nstart=20)
+km.out$cluster
+table(labels, km.out$cluster)
+
+## (d)
+km.out=kmeans(dat,2,nstart=20)
+km.out$cluster
+table(labels, km.out$cluster)
+
+## (e)
+km.out=kmeans(dat,4,nstart=20)
+km.out$cluster
+table(labels, km.out$cluster)
+
+## (f)
+dat.pr = rbind(pr.out$x[,1], pr.out$x[,2])
+km.out=kmeans(dat,3,nstart=20)
+table(labels, km.out$cluster)
+
+## (g)
+dat.scale = scale(dat)
+km.out=kmeans(dat.scale,3,nstart=20)
+table(labels, km.out$cluster)
+
+# (11)
+## (a)
+dat = read.csv("Ch10Ex11.csv",header=F)
+dat = t(dat)
+## (b)
+dd = as.dist(1-cor(t(dat)))
+hc.complete=hclust(dd, method="complete")
+hc.average=hclust(dd, method="average")
+hc.single=hclust(dd, method="single")
+table(hc.complete,hc.average)
+
+## (c)
+predicted=cutree( hc.complete, k=2 ) 
+
+n1 = apply( dat[ predicted==1, ], 2, length ) 
+n2 = apply( dat[ predicted==2, ], 2, length )
+
+m1 = apply( dat[ predicted==1, ], 2, mean ) 
+m2 = apply( dat[ predicted==2, ], 2, mean )
+
+v1 = apply( dat[ predicted==1, ], 2, var ) 
+v2 = apply( dat[ predicted==2, ], 2, var )
+
+pooled_variance = sqrt( v1 / n1 + v2 / n2 )
+
+t_value = ( m1 - m2 ) / pooled_variance 
+plot(t_value)
+
+
+## (c)_
+pr.out=prcomp(dat, scale=TRUE)
+plot( pr.out$x[,1], pr.out$x[,2], col=labels, pch=19 )
+biplot(pr.out)
+
+pr.var=pr.out$sdev^2
+pve_1=pr.var/sum(pr.var)
+pve_1
+hc.complete=hclust(pr.out$rotation, method="complete")
+
+matrix(1000*20,pr.out$rotation)
 
 
 
