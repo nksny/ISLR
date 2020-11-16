@@ -127,6 +127,11 @@ pooled_variance = sqrt( v1 / n1 + v2 / n2 )
 t_value = ( m1 - m2 ) / pooled_variance 
 plot(t_value)
 
+### t検定
+g1=v1/n1
+g2=v2/n2
+f = (g1+g2)^2/(g1^2/(n1-1)+g2^2/(n2-1))
+print(f[which.min(t_value)])
 
 ## (c)_
 pr.out=prcomp(dat, scale=TRUE)
